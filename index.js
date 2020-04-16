@@ -1,9 +1,11 @@
 require("dotenv").config()
 const shopData = require("./categories.json")
+const lootboxes = require("./lootboxes.json")
 const Discord = require("discord.js")
 const client = new Discord.Client()
 
 let donationCount = 1;
+let lootBoxIndex = 0;
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`)
@@ -17,6 +19,16 @@ client.on("message", msg => {
     .then(message => {
       message.react('💚');
     })
+  }
+  if(msg.content === "!announceLootbox" && msg.author.id === 98906605168373760n) {
+    msg.channel.send(`[Loot Box] located at ${lootboxes[lootBoxIndex].latitude} Latitude, ${lootboxes[lootBoxIndex].longitude} Longitude! Hurry and find it before someone else does!`)
+    .catch(console.error);
+  }
+  if(msg.content === "!setLootIndex" && msg.author.id === 98906605168373760n) {
+    let index = msg.content.split(' ')[1];
+    lootBoxIndex = index;
+    msg.reply(`Set index of lootboxs to ${lootBoxIndex}!`)
+    .catch(console.error);
   }
 })
 
