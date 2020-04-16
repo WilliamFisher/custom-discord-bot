@@ -1,0 +1,104 @@
+[{
+    "id": 1,
+    "name" : "Taming Kits",
+    "items": [
+        {
+            "name": "Basic Taming Kit",
+            "price": 5
+        },
+        {
+            "name": "Advanced Taming Kit",
+            "price": 10
+        }
+    ]
+},
+{
+    "id": 2,
+    "name" : "Starter Kits",
+    "items": [
+        {
+            "name": "Basic Taming Kit",
+            "price": 5
+        }
+    ]
+},
+{
+    "id": 3,
+    "name" : "Dino Kits",
+    "items": [
+        {
+            "name": "Basic Taming Kit",
+            "price": 5
+        }
+    ]
+},
+{
+    "id": 4,
+    "name" : "Base Kits",
+    "items": [
+        {
+            "name": "Basic Taming Kit",
+            "price": 5
+        }
+    ]
+},
+{
+    "id": 5,
+    "name" : "BP Kits",
+    "items": [
+        {
+            "name": "Basic Taming Kit",
+            "price": 5
+        }
+    ]
+},
+{
+    "id": 6,
+    "name" : "Boss Fights",
+    "items": [
+        {
+            "name": "Basic Taming Kit",
+            "price": 5
+        }
+    ]
+},
+{
+    "id": 7,
+    "name" : "Resource Pack",
+    "items": [
+        {
+            "name": "Basic Taming Kit",
+            "price": 5
+        }
+    ]
+},
+{
+    "id": 8,
+    "name" : "Element Kits",
+    "items": [
+        {
+            "name": "Basic Taming Kit",
+            "price": 5
+        }
+    ]
+},
+{
+    "id": 9,
+    "name" : "Bullets Kit",
+    "items": [
+        {
+            "name": "Basic Taming Kit",
+            "price": 5
+        }
+    ]
+},
+{
+    "id": 10,
+    "name" : "Big Baller Kits",
+    "items": [
+        {
+            "name": "Basic Taming Kit",
+            "price": 5
+        }
+    ]
+}]
