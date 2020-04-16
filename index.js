@@ -23,9 +23,12 @@ client.on("message", msg => {
   if(msg.content === "!loot" && msg.member.hasPermission('ADMINISTRATOR')) {
     msg.delete();
     msg.channel.send(`**[Loot Box]** \n${lootboxes[lootBoxIndex].latitude} Latitude\n${lootboxes[lootBoxIndex].longitude} Longitude\n*Hurry and find it before someone else does!*`)
+    .then(() => {
+      lootBoxIndex++;
+    })
     .catch(console.error);
   }
-  if(msg.content === "!setLootIndex" && msg.member.hasPermission('ADMINISTRATOR')) {
+  if(msg.content.startsWith("!setIndex") && msg.member.hasPermission('ADMINISTRATOR')) {
     msg.delete();
     let index = msg.content.split(' ')[1];
     lootBoxIndex = index;
