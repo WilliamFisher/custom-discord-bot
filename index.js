@@ -20,11 +20,13 @@ client.on("message", msg => {
       message.react('💚');
     })
   }
-  if(msg.content === "!announceLootbox" && msg.member.hasPermission('ADMINISTRATOR')) {
+  if(msg.content === "!loot" && msg.member.hasPermission('ADMINISTRATOR')) {
+    msg.delete();
     msg.channel.send(`[Loot Box] located at ${lootboxes[lootBoxIndex].latitude} Latitude, ${lootboxes[lootBoxIndex].longitude} Longitude! Hurry and find it before someone else does!`)
     .catch(console.error);
   }
   if(msg.content === "!setLootIndex" && msg.member.hasPermission('ADMINISTRATOR')) {
+    msg.delete();
     let index = msg.content.split(' ')[1];
     lootBoxIndex = index;
     msg.reply(`Set index of lootboxs to ${lootBoxIndex}!`)
