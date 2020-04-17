@@ -9,6 +9,14 @@
         {
             "name": "Advanced Taming Kit",
             "price": 10
+        },
+        {
+            "name": "Super Taming Kit",
+            "price": 20
+        },
+        {
+            "name": "Sloppy Taming Kit",
+            "price": 30
         }
     ]
 },
@@ -17,8 +25,20 @@
     "name" : "Starter Kits",
     "items": [
         {
-            "name": "Basic Taming Kit",
+            "name": "Basic Starter Kit",
             "price": 5
+        },
+        {
+            "name": "Advanced Starter Kit",
+            "price": 7
+        },
+        {
+            "name": "Super Starter Kit",
+            "price": 10
+        },
+        {
+            "name": "Sloppy Starter Kit",
+            "price": 20
         }
     ]
 },
@@ -27,8 +47,20 @@
     "name" : "Dino Kits",
     "items": [
         {
-            "name": "Basic Taming Kit",
+            "name": "Basic Dino Kit",
+            "price": 3
+        },
+        {
+            "name": "Advanced Dino Kit",
             "price": 5
+        },
+        {
+            "name": "Super Dino Kit",
+            "price": 10
+        },
+        {
+            "name": "Sloppy Dino Kit",
+            "price": 20
         }
     ]
 },
@@ -37,8 +69,20 @@
     "name" : "Base Kits",
     "items": [
         {
-            "name": "Basic Taming Kit",
-            "price": 5
+            "name": "Basic Base Kit",
+            "price": 10
+        },
+        {
+            "name": "Advanced Base Kit",
+            "price": 20
+        },
+        {
+            "name": "Super Base Kit",
+            "price": 30
+        },
+        {
+            "name": "Sloppy Base Kit",
+            "price": 50
         }
     ]
 },
@@ -47,8 +91,20 @@
     "name" : "BP Kits",
     "items": [
         {
-            "name": "Basic Taming Kit",
+            "name": "Basic BP Kit",
+            "price": 3
+        },
+        {
+            "name": "Advanced BP Kit",
             "price": 5
+        },
+        {
+            "name": "Super BP Kit",
+            "price": 7
+        },
+        {
+            "name": "Sloppy BP Kit",
+            "price": 10
         }
     ]
 },
@@ -57,8 +113,16 @@
     "name" : "Boss Fights",
     "items": [
         {
-            "name": "Basic Taming Kit",
-            "price": 5
+            "name": "Easy Boss Fight",
+            "price": 4
+        },
+        {
+            "name": "Medium Boss Fight",
+            "price": 6
+        },
+        {
+            "name": "Hard Boss Fight",
+            "price": 10
         }
     ]
 },
@@ -67,8 +131,20 @@
     "name" : "Resource Pack",
     "items": [
         {
-            "name": "Basic Taming Kit",
+            "name": "Basic Resource Pack",
             "price": 5
+        },
+        {
+            "name": "Advanced Resource Pack",
+            "price": 7
+        },
+        {
+            "name": "Super Resource Pack",
+            "price": 10
+        },
+        {
+            "name": "Sloppy Resource Pack",
+            "price": 20
         }
     ]
 },
@@ -77,8 +153,20 @@
     "name" : "Element Kits",
     "items": [
         {
-            "name": "Basic Taming Kit",
-            "price": 5
+            "name": "Basic Element Kit",
+            "price": 7
+        },
+        {
+            "name": "Advanced Element Kit",
+            "price": 10
+        },
+        {
+            "name": "Super Element Kit",
+            "price": 20
+        },
+        {
+            "name": "Sloppy Element Kit",
+            "price": 35
         }
     ]
 },
@@ -87,8 +175,20 @@
     "name" : "Bullets Kit",
     "items": [
         {
-            "name": "Basic Taming Kit",
+            "name": "Basic Bullet Kit",
             "price": 5
+        },
+        {
+            "name": "Advanced Bullet Kit",
+            "price": 7
+        },
+        {
+            "name": "Super Bullet Kit",
+            "price": 10
+        },
+        {
+            "name": "Sloppy Bullet Kit",
+            "price": 15
         }
     ]
 },
@@ -97,8 +197,20 @@
     "name" : "Big Baller Kits",
     "items": [
         {
-            "name": "Basic Taming Kit",
-            "price": 5
+            "name": "Basic Big Baller Kit",
+            "price": 30
+        },
+        {
+            "name": "Advanced Big Baller Kit",
+            "price": 60
+        },
+        {
+            "name": "Super Big Baller Kit",
+            "price": 100
+        },
+        {
+            "name": "Sloppy Big Baller Kit",
+            "price": 150
         }
     ]
 }]
