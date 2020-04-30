@@ -1,4 +1,5 @@
 require("dotenv").config()
+const jsonfile = require('jsonfile')
 const shopData = require("./categories.json")
 const lootboxes = require("./lootboxes.json")
 const Discord = require("discord.js")
@@ -33,6 +34,15 @@ client.on("message", msg => {
     let index = msg.content.split(' ')[1];
     lootBoxIndex = index;
     msg.reply(`Set index of lootboxs to ${lootBoxIndex}!`)
+    .catch(console.error);
+  }
+  if(msg.content === "!spin") {
+    randomInt = getRandomInt();
+    msg.reply(`Congrats! You won ${randomInt}% off in the store! Your winnings have been saved and you can start an order by going to #shop and clicking the reaction!`)
+    .catch(console.error);
+    let obj = {name: msg.author.id, discount: randomInt}
+    jsonfile.writeFile('discounts.json', obj, { flag: 'a' })
+    .then(console.log('Wrote to file!'))
     .catch(console.error);
   }
 })
@@ -98,13 +108,32 @@ const handleReaction = (reaction, user) => {
             let item = collected.first().content.substring(1);
             let channel = collected.first().channel;
             let response = shopData.find(element => element.id == category)
-            Promise.all([
-              channel.send(`You selected [${response.items[item].name}]`),
-              channel.send(`To purchase with paypal click this link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=ashton0312%40gmail%2ecom&lc=US&item_name=Sloppy%20Ark&amount=${response.items[item].price}%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted`)
-            ]).catch(console.log);
+            let discount;
+            jsonfile.readFileSync('discounts.json').then((obj) => {
+              discount = obj.find(ele => ele.name == collected.first().author.id).discount
+            })
+            if(discount > 0) {
+              Promise.all([
+                channel.send(`You selected [${response.items[item].name}]`),
+                channel.send(`We have applied your discount of ${discount}%!`),
+                channel.send(`To purchase with paypal click this link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=ashton0312%40gmail%2ecom&lc=US&item_name=Sloppy%20Ark&amount=${(100-discount)/100 * (response.items[item].price)}%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted`)
+              ]).catch(console.error);
+            } else {
+              Promise.all([
+                channel.send(`You selected [${response.items[item].name}]`),
+                channel.send(`To purchase with paypal click this link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=ashton0312%40gmail%2ecom&lc=US&item_name=Sloppy%20Ark&amount=${response.items[item].price}%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted`)
+              ]).catch(console.error);
+            }
           }).catch(console.log);
         }).catch(console.log);
       }).catch(console.log);
     }).catch(console.log);
   }).catch(console.error);
+}
+
+const getRandomInt = () => {
+  min = Math.ceil(10);
+  max = Math.floor(50);
+
+  return Math.floor(Math.random() * (max - min)) + min;
 }
