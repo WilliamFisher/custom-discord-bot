@@ -1,9 +1,16 @@
 require("dotenv").config()
-const jsonfile = require('jsonfile')
+const ps = require('pg')
 const shopData = require("./categories.json")
 const lootboxes = require("./lootboxes.json")
 const Discord = require("discord.js")
 const client = new Discord.Client()
+
+const db = new ps.Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+db.connect();
 
 let donationCount = 1;
 let lootBoxIndex = 0;
@@ -40,8 +47,7 @@ client.on("message", msg => {
     randomInt = getRandomInt();
     msg.reply(`Congrats! You won ${randomInt}% off in the store! Your winnings have been saved and you can start an order by going to #shop and clicking the reaction!`)
     .catch(console.error);
-    let obj = {name: msg.author.id, discount: randomInt}
-    jsonfile.writeFile('./discounts.json', obj, { flag: 'a' })
+    db.query(`INSERT INTO discounts VALUES (${msg.author.id}, ${randomInt})`)
     .then(console.log(`Wrote id: ${msg.author.id}, discount: ${randomInt} to file!`))
     .catch(console.error);
   }
@@ -108,10 +114,7 @@ const handleReaction = (reaction, user) => {
             let item = collected.first().content.substring(1);
             let channel = collected.first().channel;
             let response = shopData.find(element => element.id == category)
-            let discount;
-            let fileObj = jsonfile.readFileSync('./discounts.json');
-            console.log(fileObj);
-            //discount = fileObj.find(ele => ele.name == collected.first().author.id).discount
+            let discount = db.query(`SELECT discount FROM discounts WHERE author='${collected.first().author.id}'`).catch(console.error);
             if(discount > 0) {
               Promise.all([
                 channel.send(`You selected [${response.items[item].name}]`),

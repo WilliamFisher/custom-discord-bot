@@ -13,7 +13,8 @@
   "dependencies": {
     "discord.js": "^12.1.1",
     "dotenv": "^8.2.0",
-    "jsonfile": "^6.0.1"
+    "jsonfile": "^6.0.1",
+    "pg": "^8.0.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
