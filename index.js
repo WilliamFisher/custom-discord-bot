@@ -46,17 +46,18 @@ client.on("message", msg => {
   if(msg.content === "!spin") {
     db.query(`SELECT discount FROM discounts WHERE author='${msg.author.id}'`, (err, res) => {
       if (err) console.log(err);
+      console.log(res);
       if(res.author == msg.author.id) {
         msg.reply('Hey! You already spun the wheel!');
-        return;
+      } else {
+        randomInt = getRandomInt();
+      msg.reply(`Congrats! You won ${randomInt}% off in the store! Your winnings have been saved and you can start an order by going to #shop and clicking the reaction!`)
+      .catch(console.error);
+      db.query(`INSERT INTO discounts VALUES (${msg.author.id}, ${randomInt})`)
+      .then(console.log(`Wrote id: ${msg.author.id}, discount: ${randomInt} to file!`))
+      .catch(console.error);
       }
     })
-    randomInt = getRandomInt();
-    msg.reply(`Congrats! You won ${randomInt}% off in the store! Your winnings have been saved and you can start an order by going to #shop and clicking the reaction!`)
-    .catch(console.error);
-    db.query(`INSERT INTO discounts VALUES (${msg.author.id}, ${randomInt})`)
-    .then(console.log(`Wrote id: ${msg.author.id}, discount: ${randomInt} to file!`))
-    .catch(console.error);
   }
 })
 
@@ -122,6 +123,7 @@ const handleReaction = (reaction, user) => {
             let channel = collected.first().channel;
             let response = shopData.find(element => element.id == category)
             let discount = db.query(`SELECT discount FROM discounts WHERE author='${collected.first().author.id}'`).catch(console.error);
+            console.log(discount);
             if(discount > 0) {
               Promise.all([
                 channel.send(`You selected [${response.items[item].name}]`),
