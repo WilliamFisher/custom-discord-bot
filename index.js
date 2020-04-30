@@ -46,7 +46,7 @@ client.on("message", msg => {
   if(msg.content === "!spin") {
     db.query(`SELECT author FROM discounts WHERE author='${msg.author.id}'`, (err, res) => {
       if (err) console.log(err);
-      if(res.rows[0].author == msg.author.id) {
+      if(res.rows.length > 0) {
         msg.reply('Hey! You already spun the wheel!');
       } else {
         randomInt = getRandomInt();
