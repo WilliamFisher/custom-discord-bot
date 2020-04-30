@@ -44,13 +44,13 @@ client.on("message", msg => {
     .catch(console.error);
   }
   if(msg.content === "!spin") {
-    db.query(`SELECT discount FROM discounts WHERE author='${msg.author.id}';`, (err, res => {
+    db.query(`SELECT discount FROM discounts WHERE author='${msg.author.id}'`, (err, res) => {
       if (err) console.log(err);
       if(res.author == msg.author.id) {
         msg.reply('Hey! You already spun the wheel!');
         return;
       }
-    }))
+    })
     randomInt = getRandomInt();
     msg.reply(`Congrats! You won ${randomInt}% off in the store! Your winnings have been saved and you can start an order by going to #shop and clicking the reaction!`)
     .catch(console.error);
