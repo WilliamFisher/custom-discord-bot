@@ -121,20 +121,22 @@ const handleReaction = (reaction, user) => {
             let item = collected.first().content.substring(1);
             let channel = collected.first().channel;
             let response = shopData.find(element => element.id == category)
-            let discountData = db.query(`SELECT discount FROM discounts WHERE author='${collected.first().author.id}'`).catch(console.error);
-            if(discountData.rows.length > 0) {
-              let discount = discountData.rows[0].discount;
-              Promise.all([
-                channel.send(`You selected [${response.items[item].name}]`),
-                channel.send(`We have applied your discount: ${discount}%!`),
-                channel.send(`To purchase with paypal click this link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=ashton0312%40gmail%2ecom&lc=US&item_name=Sloppy%20Ark&amount=${(100-discount)/100 * (response.items[item].price)}%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted`)
-              ]).catch(console.error);
-            } else {
-              Promise.all([
-                channel.send(`You selected [${response.items[item].name}]`),
-                channel.send(`To purchase with paypal click this link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=ashton0312%40gmail%2ecom&lc=US&item_name=Sloppy%20Ark&amount=${response.items[item].price}%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted`)
-              ]).catch(console.error);
-            }
+            db.query(`SELECT discount FROM discounts WHERE author='${collected.first().author.id}'`)
+            .then(res => {
+              if(res.rows.length > 0) {
+                let discount = discountData.rows[0].discount;
+                Promise.all([
+                  channel.send(`You selected [${response.items[item].name}]`),
+                  channel.send(`We have applied your discount: ${discount}%!`),
+                  channel.send(`To purchase with paypal click this link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=ashton0312%40gmail%2ecom&lc=US&item_name=Sloppy%20Ark&amount=${(100-discount)/100 * (response.items[item].price)}%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted`)
+                ]).catch(console.error);
+              } else {
+                Promise.all([
+                  channel.send(`You selected [${response.items[item].name}]`),
+                  channel.send(`To purchase with paypal click this link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=ashton0312%40gmail%2ecom&lc=US&item_name=Sloppy%20Ark&amount=${response.items[item].price}%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted`)
+                ]).catch(console.error);
+              }
+            }).catch(console.error);
           }).catch(console.log);
         }).catch(console.log);
       }).catch(console.log);
