@@ -124,7 +124,7 @@ const handleReaction = (reaction, user) => {
             db.query(`SELECT discount FROM discounts WHERE author='${collected.first().author.id}'`)
             .then(res => {
               if(res.rows.length > 0) {
-                let discount = discountData.rows[0].discount;
+                let discount = res.rows[0].discount;
                 Promise.all([
                   channel.send(`You selected [${response.items[item].name}]`),
                   channel.send(`We have applied your discount: ${discount}%!`),
