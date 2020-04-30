@@ -41,7 +41,7 @@ client.on("message", msg => {
     msg.reply(`Congrats! You won ${randomInt}% off in the store! Your winnings have been saved and you can start an order by going to #shop and clicking the reaction!`)
     .catch(console.error);
     let obj = {name: msg.author.id, discount: randomInt}
-    jsonfile.writeFile('discounts.json', obj, { flag: 'a' })
+    jsonfile.writeFile('./discounts.json', obj, { flag: 'a' })
     .then(console.log('Wrote to file!'))
     .catch(console.error);
   }
@@ -109,7 +109,7 @@ const handleReaction = (reaction, user) => {
             let channel = collected.first().channel;
             let response = shopData.find(element => element.id == category)
             let discount;
-            let fileObj = jsonfile.readFileSync('discounts.json');
+            let fileObj = jsonfile.readFileSync('./discounts.json');
             discount = fileObj.find(ele => ele.name == collected.first().author.id).discount
             if(discount > 0) {
               Promise.all([
