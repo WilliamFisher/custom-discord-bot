@@ -46,8 +46,7 @@ client.on("message", msg => {
   if(msg.content === "!spin") {
     db.query(`SELECT author FROM discounts WHERE author='${msg.author.id}'`, (err, res) => {
       if (err) console.log(err);
-      console.log(res);
-      if(res.rows.author == msg.author.id) {
+      if(res.rows[0].author == msg.author.id) {
         msg.reply('Hey! You already spun the wheel!');
       } else {
         randomInt = getRandomInt();
@@ -123,7 +122,8 @@ const handleReaction = (reaction, user) => {
             let channel = collected.first().channel;
             let response = shopData.find(element => element.id == category)
             let discountData = db.query(`SELECT discount FROM discounts WHERE author='${collected.first().author.id}'`).catch(console.error);
-            if(discountData.rows.discount > 0) {
+            if(discountData.rows.length > 0) {
+              let discount = discountData.rows[0].discount;
               Promise.all([
                 channel.send(`You selected [${response.items[item].name}]`),
                 channel.send(`We have applied your discount: ${discount}%!`),
