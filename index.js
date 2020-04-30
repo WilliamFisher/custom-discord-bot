@@ -109,9 +109,8 @@ const handleReaction = (reaction, user) => {
             let channel = collected.first().channel;
             let response = shopData.find(element => element.id == category)
             let discount;
-            jsonfile.readFileSync('discounts.json').then((obj) => {
-              discount = obj.find(ele => ele.name == collected.first().author.id).discount
-            })
+            let fileObj = jsonfile.readFileSync('discounts.json');
+            discount = fileObj.find(ele => ele.name == collected.first().author.id).discount
             if(discount > 0) {
               Promise.all([
                 channel.send(`You selected [${response.items[item].name}]`),
