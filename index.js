@@ -42,7 +42,7 @@ client.on("message", msg => {
     .catch(console.error);
     let obj = {name: msg.author.id, discount: randomInt}
     jsonfile.writeFile('./discounts.json', obj, { flag: 'a' })
-    .then(console.log('Wrote to file!'))
+    .then(console.log(`Wrote id: ${msg.author.id}, discount: ${randomInt} to file!`))
     .catch(console.error);
   }
 })
@@ -110,7 +110,8 @@ const handleReaction = (reaction, user) => {
             let response = shopData.find(element => element.id == category)
             let discount;
             let fileObj = jsonfile.readFileSync('./discounts.json');
-            discount = fileObj.find(ele => ele.name == collected.first().author.id).discount
+            console.log(fileObj);
+            //discount = fileObj.find(ele => ele.name == collected.first().author.id).discount
             if(discount > 0) {
               Promise.all([
                 channel.send(`You selected [${response.items[item].name}]`),
