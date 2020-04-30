@@ -7,7 +7,7 @@ const client = new Discord.Client()
 
 const db = new ps.Client({
   connectionString: process.env.DATABASE_URL,
-  ssl: true,
+  ssl: { rejectUnauthorized: false },
 });
 
 db.connect();
