@@ -33,7 +33,7 @@ client.on("messageReactionAdd", (reaction, user) => {
     reaction.emoji.name === "💚" &&
     reaction.message.author.id === client.user.id
   ) {
-    methods.handleReaction(reaction, user);
+    methods.handleReaction(reaction, user, client);
   }
 });
 

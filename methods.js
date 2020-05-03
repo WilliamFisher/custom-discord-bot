@@ -21,7 +21,7 @@ const getRandomInt = () => {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
-const handleReaction = async (reaction, user) => {
+const handleReaction = async (reaction, user, client) => {
   if (reaction.message.author.id === user.id) return;
   reaction.users.remove(user.id);
   const channelPermissions = {
