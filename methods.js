@@ -85,7 +85,7 @@ const handleReaction = async (reaction, user, client) => {
 
     const response = await db.query(
       `SELECT discount FROM discounts WHERE author='${
-        collectedMessageContent.first().author.id
+        collectedMessage.first().author.id
       }'`
     );
     if (response.rows.length > 0) {
