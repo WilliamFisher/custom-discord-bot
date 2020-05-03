@@ -68,7 +68,7 @@ const handleReaction = async (reaction, user, client) => {
       (element) => element.id == collectedMessageContent
     );
     await channel.send(
-      `You selected [${response.name}]. Which item would you like?`
+      `You selected [${category.name}]. Which item would you like?`
     );
 
     let itemString = "";
