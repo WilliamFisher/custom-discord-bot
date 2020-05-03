@@ -79,7 +79,7 @@ const handleReaction = async (reaction, user, client) => {
     }
 
     await channel.send(itemString);
-    collectedMessage = await channel.awaitMessages(filter, { max: 1 });
+    collectedMessage = await channel.awaitMessages(isNumFilter, { max: 1 });
     await collectedMessage.first().delete({ timeout: 10000 });
     collectedMessageContent = collected.first().content;
 
