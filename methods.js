@@ -14,24 +14,6 @@ db.connect();
 let donationCount = 1;
 let lootBoxIndex = 0;
 
-const channelPermissions = {
-  type: "text",
-  permissionOverwrites: [
-    {
-      id: user.id,
-      allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"],
-    },
-    {
-      id: reaction.message.guild.roles.everyone,
-      deny: ["VIEW_CHANNEL"],
-    },
-    {
-      id: client.user.id,
-      allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"],
-    },
-  ],
-};
-
 const getRandomInt = () => {
   min = Math.ceil(10);
   max = Math.floor(50);
@@ -42,6 +24,23 @@ const getRandomInt = () => {
 const handleReaction = async (reaction, user) => {
   if (reaction.message.author.id === user.id) return;
   reaction.users.remove(user.id);
+  const channelPermissions = {
+    type: "text",
+    permissionOverwrites: [
+      {
+        id: user.id,
+        allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"],
+      },
+      {
+        id: reaction.message.guild.roles.everyone,
+        deny: ["VIEW_CHANNEL"],
+      },
+      {
+        id: client.user.id,
+        allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"],
+      },
+    ],
+  };
   try {
     const channel = await reaction.message.guild.channels.create(
       `donation-${donationCount}`,
