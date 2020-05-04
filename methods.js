@@ -173,8 +173,39 @@ const handleSetupShop = async (msg) => {
   }
 };
 
+const handlePing = async (msg, client) => {
+  try {
+    let botMessage = await msg.channel.send(`Pinging...`);
+    const messageEmbed = {
+      color: 0x4be617,
+      title: 'Ping!',
+      description: 'Current Status',
+      fields: [
+        {
+          name: 'Server Ping',
+          value: `${botMessage.createdAt - msg.createdAt}ms`
+        },
+        {
+          name: 'API',
+          value: `${client.ws.ping}ms`
+        }
+      ],
+      timestamp: new Date(),
+      footer: {
+        text: `Current Servers: ${client.guilds.size}`,
+        icon_url: msg.author.displayAvatarURL
+      }
+    }
+    botMessage.delete();
+    await msg.channel.send({ embed: messageEmbed});
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 exports.handleReaction = handleReaction;
 exports.handleSpin = handleSpin;
 exports.handleSetIndex = handleSetIndex;
 exports.handleLoot = handleLoot;
 exports.handleSetupShop = handleSetupShop;
+exports.handlePing = handlePing;

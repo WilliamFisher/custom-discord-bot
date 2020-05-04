@@ -26,6 +26,9 @@ client.on("message", (msg) => {
   if (msg.content === "!spin") {
     methods.handleSpin(msg);
   }
+  if (msg.content === "!ping") {
+    methods.handlePing(msg, client);
+  }
 });
 
 client.on("messageReactionAdd", async (reaction, user) => {
