@@ -1,6 +1,6 @@
 require("dotenv").config();
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const client = new Discord.Client({ partials: ['MESSAGE','REACTION'] });
 const methods = require("./methods");
 
 client.on("ready", () => {
@@ -29,6 +29,7 @@ client.on("message", (msg) => {
 });
 
 client.on("messageReactionAdd", (reaction, user) => {
+  if(reaction.message.partial) await reaction.message.fetch();
   if (
     reaction.emoji.name === "💚" &&
     reaction.message.author.id === client.user.id
