@@ -192,7 +192,7 @@ const handlePing = async (msg, client) => {
       timestamp: new Date(),
       footer: {
         text: `API Status: ${client.ws.status}`,
-        icon_url: `${msg.author.displayAvatarURL}`
+        icon_url: client.user.avatarURL()
       }
     }
     botMessage.delete();
