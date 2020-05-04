@@ -178,8 +178,7 @@ const handlePing = async (msg, client) => {
     let botMessage = await msg.channel.send(`Pinging...`);
     const messageEmbed = {
       color: 0x4be617,
-      title: 'Ping!',
-      description: 'Current Status',
+      title: 'Pong!',
       fields: [
         {
           name: 'Server Ping',
@@ -192,8 +191,8 @@ const handlePing = async (msg, client) => {
       ],
       timestamp: new Date(),
       footer: {
-        text: `Current Servers: ${client.guilds.size}`,
-        icon_url: msg.author.displayAvatarURL
+        text: `API Status: ${client.ws.status}`,
+        icon_url: `${msg.author.displayAvatarURL}`
       }
     }
     botMessage.delete();
