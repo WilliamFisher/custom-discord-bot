@@ -202,6 +202,26 @@ const handlePing = async (msg, client) => {
   }
 }
 
+const handleSetSuggestChannel = async (msg) => {
+  try {
+    await msg.delete();
+    await db.query(`INSERT INTO suggest_channels VALUES (${msg.guild.id}, ${msg.channel.id})`);
+    const reply = await msg.reply('Set this channel as a suggestion channel');
+    await sleep(3000);
+    await reply.delete();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const sleep = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+
+
 exports.handleReaction = handleReaction;
 exports.handleSpin = handleSpin;
 exports.handleSetIndex = handleSetIndex;

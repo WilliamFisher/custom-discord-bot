@@ -29,6 +29,9 @@ client.on("message", (msg) => {
   if (msg.content === "!ping") {
     methods.handlePing(msg, client);
   }
+  if (msg.content === "!setSuggestChannel") {
+    //handle set suggestions channel
+  }
 });
 
 client.on("messageReactionAdd", async (reaction, user) => {
