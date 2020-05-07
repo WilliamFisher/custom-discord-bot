@@ -13,6 +13,7 @@ db.connect();
 // TODO: Update to store counts in the database.
 let donationCount = 1;
 let lootBoxIndex = 0;
+let suggestChannelId = 0;
 
 const getRandomInt = () => {
   min = Math.ceil(10);
@@ -228,3 +229,4 @@ exports.handleSetIndex = handleSetIndex;
 exports.handleLoot = handleLoot;
 exports.handleSetupShop = handleSetupShop;
 exports.handlePing = handlePing;
+exports.handleSetSuggestChannel = handleSetSuggestChannel;

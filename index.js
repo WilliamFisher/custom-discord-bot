@@ -30,7 +30,7 @@ client.on("message", (msg) => {
     methods.handlePing(msg, client);
   }
   if (msg.content === "!setSuggestChannel") {
-    //handle set suggestions channel
+    methods.handleSetSuggestChannel(msg);
   }
 });
 
