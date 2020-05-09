@@ -249,7 +249,7 @@ const handleNewSuggestion = async (msg, client) => {
 
     const messageEmbed = {
       color: 0x3e84ed,
-      title: "Suggestion",
+      title: 'Suggestion',
       fields: [
         {
           name: 'Author',
@@ -282,7 +282,7 @@ const handleNewSuggestion = async (msg, client) => {
 
 const handleUpdateSuggestion = async (msg, client, status) => {
   const suggestionID = msg.content.split(/ +/);
-  const query = "SELECT * FROM suggestions WHERE suggestion_id=$1";
+  const query = "SELECT * FROM suggestions WHERE suggestion_id='$1'";
   const values = [suggestionID];
   const response = await db.query(query, values);
 
