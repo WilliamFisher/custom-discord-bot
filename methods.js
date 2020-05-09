@@ -285,13 +285,13 @@ const handleUpdateSuggestion = async (msg, client, status) => {
   const query = 'SELECT * FROM suggestions WHERE suggestion_id = $1';
   const values = [suggestionID];
   const response = await db.query(query, values);
-  console.log(response);
-
   const suggestionChannel = await client.channels.fetch(response.rows[0].s_channel_id);
 
   suggestionMessage = await suggestionChannel.messages.fetch(response.rows[0].s_message_id);
 
-  console.log(`${suggestionChannel.id} | ${suggestionMessage.id}`);
+  const suggestion = suggestionMessage.embeds[0].fields[1].value;
+  const userID = suggestionMessage.embeds[0].footer.text.split(/ +/)[2];
+  const suggestionUser = client.users.fetch(userID);
 
   let embedColor = "";
   if (status === 0) {
@@ -301,11 +301,25 @@ const handleUpdateSuggestion = async (msg, client, status) => {
   }
   const messageEmbed = {
     color: embedColor,
-    title: "Suggestion Approved"
+    title: `${status === 0 ? 'Approved' : 'Rejected'}`,
+    fields: [
+      {
+        name: 'Author',
+        value: `${suggestionUser.tag}`,
+      },
+      {
+        name: 'Suggestion',
+        value: `${suggestion}`,
+      },
+    ],
+    timestamp: new Date(),
+    footer: {
+      text: `User ID: ${suggestionUser.id} | sID: ${suggestionID}`,
+    },
   };
 
   await suggestionMessage.edit({ embed: messageEmbed });
-  // Still need to figure out how to send a DM to a user
+  await suggestionUser.send(`Hi there! Your suggestion '${suggestion}' has been ${status === 0 ? 'approved!' : 'rejected.'}`);
 }
 
 const sleep = (ms) => {
