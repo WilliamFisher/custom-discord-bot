@@ -243,6 +243,10 @@ const handleNewSuggestion = async (msg, client) => {
   const channelID = response.rows[0].channel_id;
   const suggestionsChannel = client.channels.fetch(channelID);
 
+  console.log(`guildID: ${guildID} channelID: ${channelID}`);
+  console.log(response);
+  console.log(suggestionsChannel);
+
   const messageEmbed = {
     color: 0x4be617,
     title: 'Suggestion',
@@ -262,9 +266,12 @@ const handleNewSuggestion = async (msg, client) => {
     }
   }
 
-  const suggestionMessage = await suggestionsChannel.send({ embed: messageEmbed});
-  await suggestionsChannel.react('✅');
-  await suggestionsChannel.react('🚫');
+  if(typeof suggestionsChannel !== "undefined") {
+    const suggestionMessage = await suggestionsChannel.send({ embed: messageEmbed});
+    await suggestionMessage.react('✅');
+    await suggestionMessage.react('🚫');
+  }
+  
 }
 
 const sleep = (ms) => {
