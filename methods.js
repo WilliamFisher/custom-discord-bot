@@ -229,6 +229,7 @@ const handleNewSuggestion = async (msg, client) => {
     let values = [`${suggestionID}`];
     let result = await db.query(query, values);
     console.log(result);
+    unique = true;
     if(!result.rows[0]) {
       unique = true;
     }
