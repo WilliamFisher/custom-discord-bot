@@ -216,13 +216,18 @@ const handleSetSuggestChannel = async (msg) => {
 }
 
 const handleNewSuggestion = async (msg, client) => {
-  const suggestion = msg.content.substring(8) // 8 is the index at which the suggestion starts
+  let suggestion = msg.content.substring(8) // 8 is the index at which the suggestion starts
+  if(suggestion.length > 300) {
+    return msg.reply("Sorry but suggestions can not exceed 300 characters");
+  }
   // This will work but for production applications id's should be generated differently
   let suggestionID;
   let unique = false;
   do {
     suggestionID = Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 5);
-    let result = await db.query(`SELECT EXISTS(SELECT 1 from suggestions where id=${suggestionID})`);
+    const query = 'SELECT EXISTS(SELECT 1 from suggestions where id=$1)';
+    let values = [`${suggestionID}`];
+    let result = await db.query(query, values);
     console.log(result);
     if(!result.rows[0]) {
       unique = true;
@@ -230,7 +235,9 @@ const handleNewSuggestion = async (msg, client) => {
   }
   while(!unique)
 
-  await db.query(`INSERT INTO suggestions VALUES (${suggestionID}, ${suggestion})`);
+  const query = 'INSERT INTO suggestions VALUES ($1, $2)'
+  const values = [suggestionID, suggestion];
+  await db.query(query, values);
 
   const guildID = msg.guild.id;
   const response = await db.query(`SELECT channel_id FROM suggest_channels WHERE guild_id='${guildID}'`);
