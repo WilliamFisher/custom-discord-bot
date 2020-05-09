@@ -219,6 +219,7 @@ const handleSetSuggestChannel = async (msg) => {
 
 const handleNewSuggestion = async (msg, client) => {
   try {
+    await msg.delete();
     let suggestion = msg.content.substring(8); // 8 is the index at which the suggestion starts
     if (suggestion.length > 300) {
       return msg.reply("Sorry but suggestions can not exceed 300 characters");
@@ -239,6 +240,9 @@ const handleNewSuggestion = async (msg, client) => {
       }
     } while (!unique);
 
+    // Need to update to include suggestion message and suggestion channel
+    // Maybe allow suggestion message id to be null and fill after
+    
     const query = "INSERT INTO suggestions VALUES ($1, $2)";
     const values = [suggestionID, suggestion];
     await db.query(query, values);
@@ -251,15 +255,15 @@ const handleNewSuggestion = async (msg, client) => {
     const suggestionsChannel = await client.channels.fetch(channelID);
 
     const messageEmbed = {
-      color: 0x4be617,
+      color: 0x3e84ed,
       title: "Suggestion",
       fields: [
         {
-          name: `Suggestion From`,
+          name: 'Author',
           value: `${msg.author.tag}`,
         },
         {
-          name: "Suggestion",
+          name: 'Suggestion',
           value: `${suggestion}`,
         },
       ],
@@ -280,6 +284,14 @@ const handleNewSuggestion = async (msg, client) => {
     console.error(error);
   }
 };
+
+const handleApproveSuggestion = (msg) => {
+  const suggestionID = msg.content.split(/ +/);
+  // Lookup suggestion by id in database
+  // Need to be able to retrive the suggestions channel id and message id
+  // When creating a suggestion need to include this info in the table
+  // Update the color of the suggestion embed message and send a DM to suggestion author
+}
 
 const sleep = (ms) => {
   return new Promise((resolve) => {

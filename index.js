@@ -35,6 +35,12 @@ client.on("message", (msg) => {
   if(msg.content.startsWith("!suggest")) {
     methods.handleNewSuggestion(msg, client);
   }
+  if(msg.content.startsWith("!approve")) {
+    methods.handleApproveSuggestion(msg);
+  }
+  if(msg.content.startsWith("!reject")) {
+    methods.handleRejectSuggestion(msg);
+  }
 });
 
 client.on("messageReactionAdd", async (reaction, user) => {
