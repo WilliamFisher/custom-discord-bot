@@ -179,108 +179,113 @@ const handlePing = async (msg, client) => {
     let botMessage = await msg.channel.send(`Pinging...`);
     const messageEmbed = {
       color: 0x4be617,
-      title: 'Pong!',
+      title: "Pong!",
       fields: [
         {
-          name: 'Server Ping',
-          value: `${botMessage.createdAt - msg.createdAt}ms`
+          name: "Server Ping",
+          value: `${botMessage.createdAt - msg.createdAt}ms`,
         },
         {
-          name: 'API',
-          value: `${client.ws.ping}ms`
-        }
+          name: "API",
+          value: `${client.ws.ping}ms`,
+        },
       ],
       timestamp: new Date(),
       footer: {
         text: `API Status: ${client.ws.status}`,
-        icon_url: client.user.avatarURL()
-      }
-    }
+        icon_url: client.user.avatarURL(),
+      },
+    };
     botMessage.delete();
-    await msg.channel.send({ embed: messageEmbed});
+    await msg.channel.send({ embed: messageEmbed });
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 const handleSetSuggestChannel = async (msg) => {
   try {
     await msg.delete();
-    await db.query(`INSERT INTO suggest_channels VALUES (${msg.guild.id}, ${msg.channel.id})`);
-    const reply = await msg.reply('Set this channel as a suggestion channel');
+    await db.query(
+      `INSERT INTO suggest_channels VALUES (${msg.guild.id}, ${msg.channel.id})`
+    );
+    const reply = await msg.reply("Set this channel as a suggestion channel");
     await sleep(3000);
     await reply.delete();
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 const handleNewSuggestion = async (msg, client) => {
-  let suggestion = msg.content.substring(8) // 8 is the index at which the suggestion starts
-  if(suggestion.length > 300) {
-    return msg.reply("Sorry but suggestions can not exceed 300 characters");
-  }
-  // This will work but for production applications id's should be generated differently
-  let suggestionID;
-  let unique = false;
-  do {
-    suggestionID = Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 5);
-    const query = 'SELECT EXISTS(SELECT 1 from suggestions where suggestion_id=$1)';
-    let values = [`${suggestionID}`];
-    let result = await db.query(query, values);
-    if(!result.rows[0].exists) {
-      unique = true;
+  try {
+    let suggestion = msg.content.substring(8); // 8 is the index at which the suggestion starts
+    if (suggestion.length > 300) {
+      return msg.reply("Sorry but suggestions can not exceed 300 characters");
     }
-  }
-  while(!unique)
-
-  const query = 'INSERT INTO suggestions VALUES ($1, $2)'
-  const values = [suggestionID, suggestion];
-  await db.query(query, values);
-
-  const guildID = msg.guild.id;
-  const response = await db.query(`SELECT channel_id FROM suggest_channels WHERE guild_id='${guildID}'`);
-  const channelID = response.rows[0].channel_id;
-  const suggestionsChannel = client.channels.fetch(channelID);
-
-  console.log(`guildID: ${guildID} channelID: ${channelID}`);
-  console.log(response);
-  console.log(suggestionsChannel);
-
-  const messageEmbed = {
-    color: 0x4be617,
-    title: 'Suggestion',
-    fields: [
-      {
-        name: `Suggestion From`,
-        value: `${msg.author.tag}`
-      },
-      {
-        name: 'Suggestion',
-        value: `${suggestion}`
+    // This will work but for production applications id's should be generated differently
+    let suggestionID;
+    let unique = false;
+    do {
+      suggestionID =
+        Math.random().toString(36).substring(2, 8) +
+        Math.random().toString(36).substring(2, 5);
+      const query =
+        "SELECT EXISTS(SELECT 1 from suggestions where suggestion_id=$1)";
+      let values = [`${suggestionID}`];
+      let result = await db.query(query, values);
+      if (!result.rows[0].exists) {
+        unique = true;
       }
-    ],
-    timestamp: new Date(),
-    footer: {
-      text: `User ID: ${msg.author.id} | sID: ${suggestionID}`
-    }
-  }
+    } while (!unique);
 
-  if(typeof suggestionsChannel !== "undefined") {
-    const suggestionMessage = await suggestionsChannel.send({ embed: messageEmbed});
-    await suggestionMessage.react('✅');
-    await suggestionMessage.react('🚫');
+    const query = "INSERT INTO suggestions VALUES ($1, $2)";
+    const values = [suggestionID, suggestion];
+    await db.query(query, values);
+
+    const guildID = msg.guild.id;
+    const response = await db.query(
+      `SELECT channel_id FROM suggest_channels WHERE guild_id='${guildID}'`
+    );
+    const channelID = response.rows[0].channel_id;
+    const suggestionsChannel = await client.channels.fetch(channelID);
+
+    const messageEmbed = {
+      color: 0x4be617,
+      title: "Suggestion",
+      fields: [
+        {
+          name: `Suggestion From`,
+          value: `${msg.author.tag}`,
+        },
+        {
+          name: "Suggestion",
+          value: `${suggestion}`,
+        },
+      ],
+      timestamp: new Date(),
+      footer: {
+        text: `User ID: ${msg.author.id} | sID: ${suggestionID}`,
+      },
+    };
+
+    if (typeof suggestionsChannel !== "undefined") {
+      const suggestionMessage = await suggestionsChannel.send({
+        embed: messageEmbed,
+      });
+      await suggestionMessage.react("✅");
+      await suggestionMessage.react("🚫");
+    }
+  } catch (error) {
+    console.error(error);
   }
-  
-}
+};
 
 const sleep = (ms) => {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
-}
-
-
+};
 
 exports.handleReaction = handleReaction;
 exports.handleSpin = handleSpin;
