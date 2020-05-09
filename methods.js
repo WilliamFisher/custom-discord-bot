@@ -293,8 +293,8 @@ const handleUpdateSuggestion = async (msg, client, status) => {
   const userID = suggestionMessage.embeds[0].footer.text.split(/ +/)[2];
   const suggestionUser = client.users.fetch(userID);
 
-  console.log(suggestionMessage.embeds[0]);
-  console.log(`${userID}` | suggestionUser.id);
+  console.log(suggestionMessage.embeds[0].footer.text.split(/ +/));
+  console.log(`${userID} | ${suggestionUser.id}`);
 
   let embedColor = "";
   if (status === 0) {
