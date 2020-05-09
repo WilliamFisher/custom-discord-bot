@@ -280,7 +280,7 @@ const handleNewSuggestion = async (msg, client) => {
   }
 };
 
-const handleUpdateSuggestion = (msg, status) => {
+const handleUpdateSuggestion = async (msg, status) => {
   const suggestionID = msg.content.split(/ +/);
   const query = "SELECT * FROM suggestions WHERE suggestion_id=$1";
   const values = [suggestionID];
