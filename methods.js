@@ -291,7 +291,7 @@ const handleUpdateSuggestion = async (msg, client, status) => {
 
   const suggestion = suggestionMessage.embeds[0].fields[1].value;
   const userID = suggestionMessage.embeds[0].footer.text.split(/ +/)[2];
-  const suggestionUser = client.users.fetch(userID);
+  const suggestionUser = await client.users.fetch(userID);
 
   console.log(suggestionUser);
 
