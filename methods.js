@@ -215,6 +215,52 @@ const handleSetSuggestChannel = async (msg) => {
   }
 }
 
+const handleNewSuggestion = async (msg, client) => {
+  const suggestion = msg.content.substring(8) // 8 is the index at which the suggestion starts
+  // This will work but for production applications id's should be generated differently
+  let suggestionID;
+  let unique = false;
+  do {
+    suggestionID = Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 5);
+    let result = await db.query(`SELECT EXISTS(SELECT 1 from suggestions where id=${suggestionID})`);
+    console.log(result);
+    if(!result.rows[0]) {
+      unique = true;
+    }
+  }
+  while(!unique)
+
+  await db.query(`INSERT INTO suggestions VALUES (${suggestionID}, ${suggestion})`);
+
+  const guildID = msg.guild.id;
+  const response = await db.query(`SELECT channel_id FROM suggest_channels WHERE guild_id='${guildID}'`);
+  const channelID = response.rows[0].channel_id;
+  const suggestionsChannel = client.channels.fetch(channelID);
+
+  const messageEmbed = {
+    color: 0x4be617,
+    title: 'Suggestion',
+    fields: [
+      {
+        name: `Suggestion From`,
+        value: `${msg.author.tag}`
+      },
+      {
+        name: 'Suggestion',
+        value: `${suggestion}`
+      }
+    ],
+    timestamp: new Date(),
+    footer: {
+      text: `User ID: ${msg.author.id} | sID: ${suggestionID}`
+    }
+  }
+
+  const suggestionMessage = await suggestionsChannel.send({ embed: messageEmbed});
+  await suggestionMessage.react('✅');
+  await suggestionMessage.react('🚫');
+}
+
 const sleep = (ms) => {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -230,3 +276,4 @@ exports.handleLoot = handleLoot;
 exports.handleSetupShop = handleSetupShop;
 exports.handlePing = handlePing;
 exports.handleSetSuggestChannel = handleSetSuggestChannel;
+exports.handleNewSuggestion = handleNewSuggestion;

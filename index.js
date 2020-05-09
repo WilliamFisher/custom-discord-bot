@@ -32,6 +32,9 @@ client.on("message", (msg) => {
   if (msg.content === "!setSuggestChannel") {
     methods.handleSetSuggestChannel(msg);
   }
+  if(msg.content.startsWith("!suggest")) {
+    methods.handleNewSuggestion(msg, client);
+  }
 });
 
 client.on("messageReactionAdd", async (reaction, user) => {
