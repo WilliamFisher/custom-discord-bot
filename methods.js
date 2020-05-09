@@ -225,7 +225,7 @@ const handleNewSuggestion = async (msg, client) => {
   let unique = false;
   do {
     suggestionID = Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 5);
-    const query = 'SELECT EXISTS(SELECT 1 from suggestions where id=$1)';
+    const query = 'SELECT EXISTS(SELECT 1 from suggestions where suggestion_id=$1)';
     let values = [`${suggestionID}`];
     let result = await db.query(query, values);
     console.log(result);
