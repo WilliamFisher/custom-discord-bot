@@ -286,9 +286,13 @@ const handleUpdateSuggestion = async (msg, client, status) => {
   const values = [suggestionID];
   const response = await db.query(query, values);
 
+  console.log(response);
+
   const suggestionChannel = await client.channels.fetch(response.rows[0].s_channel_id);
 
   suggestionMessage = await suggestionChannel.messages.fetch(response.rows[0].s_message_id);
+
+  console.log(`${suggestionChannel.id} | ${suggestionMessage.id}`);
 
   let embedColor = "";
   if (status === 0) {
