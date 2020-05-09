@@ -281,11 +281,10 @@ const handleNewSuggestion = async (msg, client) => {
 };
 
 const handleUpdateSuggestion = async (msg, client, status) => {
-  const suggestionID = msg.content.split(/ +/);
+  const suggestionID = msg.content.split(/ +/)[1];
   const query = 'SELECT * FROM suggestions WHERE suggestion_id = $1';
-  const values = [`${suggestionID}`];
+  const values = [suggestionID];
   const response = await db.query(query, values);
-
   console.log(response);
 
   const suggestionChannel = await client.channels.fetch(response.rows[0].s_channel_id);
