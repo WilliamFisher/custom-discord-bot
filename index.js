@@ -36,10 +36,10 @@ client.on("message", (msg) => {
     methods.handleNewSuggestion(msg, client);
   }
   if(msg.content.startsWith("!approve")) {
-    methods.handleApproveSuggestion(msg);
+    methods.handleUpdateSuggestion(msg, 0); // 0 = approve
   }
   if(msg.content.startsWith("!reject")) {
-    methods.handleRejectSuggestion(msg);
+    methods.handleUpdateSuggestion(msg, 1); // 1 = reject
   }
 });
 

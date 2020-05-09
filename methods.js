@@ -240,13 +240,6 @@ const handleNewSuggestion = async (msg, client) => {
       }
     } while (!unique);
 
-    // Need to update to include suggestion message and suggestion channel
-    // Maybe allow suggestion message id to be null and fill after
-    
-    const query = "INSERT INTO suggestions VALUES ($1, $2)";
-    const values = [suggestionID, suggestion];
-    await db.query(query, values);
-
     const guildID = msg.guild.id;
     const response = await db.query(
       `SELECT channel_id FROM suggest_channels WHERE guild_id='${guildID}'`
@@ -272,25 +265,44 @@ const handleNewSuggestion = async (msg, client) => {
         text: `User ID: ${msg.author.id} | sID: ${suggestionID}`,
       },
     };
+    const suggestionMessage = await suggestionsChannel.send({
+      embed: messageEmbed,
+    });
+    await suggestionMessage.react("✅");
+    await suggestionMessage.react("🚫");
 
-    if (typeof suggestionsChannel !== "undefined") {
-      const suggestionMessage = await suggestionsChannel.send({
-        embed: messageEmbed,
-      });
-      await suggestionMessage.react("✅");
-      await suggestionMessage.react("🚫");
-    }
+    const query = "INSERT INTO suggestions VALUES ($1, $2, $3, $4)";
+    const values = [suggestionID, suggestion, suggestionsChannel.id, suggestionMessage.id];
+    await db.query(query, values);
+    
   } catch (error) {
     console.error(error);
   }
 };
 
-const handleApproveSuggestion = (msg) => {
+const handleUpdateSuggestion = (msg, status) => {
   const suggestionID = msg.content.split(/ +/);
-  // Lookup suggestion by id in database
-  // Need to be able to retrive the suggestions channel id and message id
-  // When creating a suggestion need to include this info in the table
-  // Update the color of the suggestion embed message and send a DM to suggestion author
+  const query = "SELECT * FROM suggestions WHERE suggestion_id=$1";
+  const values = [suggestionID];
+  const response = await db.query(query, values);
+
+  const suggestionChannel = await client.channels.fetch(response.rows[0].s_channel_id);
+
+  suggestionMessage = await suggestionChannel.messages.fetch(response.rows[0].s_message_id);
+
+  let embedColor = "";
+  if (status === 0) {
+    embedColor = "0x02e311";
+  } else {
+    embedColor = "0xed2626";
+  }
+  const messageEmbed = {
+    color: embedColor,
+    title: "Suggestion Approved"
+  };
+
+  await suggestionMessage.edit({ embed: messageEmbed });
+  // Still need to figure out how to send a DM to a user
 }
 
 const sleep = (ms) => {
@@ -307,3 +319,4 @@ exports.handleSetupShop = handleSetupShop;
 exports.handlePing = handlePing;
 exports.handleSetSuggestChannel = handleSetSuggestChannel;
 exports.handleNewSuggestion = handleNewSuggestion;
+exports.handleUpdateSuggestion = handleUpdateSuggestion;
