@@ -228,9 +228,7 @@ const handleNewSuggestion = async (msg, client) => {
     const query = 'SELECT EXISTS(SELECT 1 from suggestions where suggestion_id=$1)';
     let values = [`${suggestionID}`];
     let result = await db.query(query, values);
-    console.log(result);
-    unique = true;
-    if(!result.rows[0]) {
+    if(!result.rows[0].exists) {
       unique = true;
     }
   }
@@ -265,8 +263,8 @@ const handleNewSuggestion = async (msg, client) => {
   }
 
   const suggestionMessage = await suggestionsChannel.send({ embed: messageEmbed});
-  await suggestionMessage.react('✅');
-  await suggestionMessage.react('🚫');
+  await suggestionsChannel.react('✅');
+  await suggestionsChannel.react('🚫');
 }
 
 const sleep = (ms) => {
